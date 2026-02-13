@@ -1,0 +1,442 @@
+<!-- ========================= configuratore.html ========================= -->
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fabbrica dei Fidanzati | Configuratore</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#0b0d10;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --chip:#f3f4f6;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --radius: 14px;
+      --maxw: 1320px;
+      --headerh: 72px;
+      --thumb: 82px;
+    }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--ink); background:var(--bg); }
+    a{ color:inherit; text-decoration:none; }
+    header{
+      position:sticky; top:0; z-index:50;
+      background:rgba(255,255,255,.92); backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+      height:var(--headerh); display:flex; align-items:center;
+    }
+    .header-inner{
+      width:100%; max-width:var(--maxw); margin:0 auto; padding:0 18px;
+      display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; gap:12px;
+    }
+    .left-actions,.right-actions{ display:flex; align-items:center; gap:14px; }
+    .menu{ display:flex; align-items:center; gap:10px; font-size:14px; }
+    .logo{ display:flex; justify-content:center; font-weight:700; letter-spacing:.28em; font-size:18px; user-select:none; }
+    .right-actions{ justify-content:flex-end; }
+    .ghost{ border:1px solid var(--line); background:#fff; padding:9px 12px; border-radius:999px; cursor:pointer; }
+
+    .subnav{ border-bottom:1px solid var(--line); background:#fff; }
+    .subnav-inner{
+      max-width:var(--maxw); margin:0 auto; padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+    }
+    .subnav-left{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; font-size:14px; }
+    .subnav-left a{ padding:8px 10px; border-radius:999px; }
+    .subnav-left a:hover{ background:var(--chip); }
+    .subnav-right{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .pill{ display:flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid var(--line); border-radius:999px; background:#fff; font-size:14px; }
+    .cta{ padding:10px 14px; border-radius:999px; border:1px solid #111827; background:#111827; color:#fff; cursor:pointer; font-weight:600; }
+    .cta.secondary{ background:#fff; color:#111827; border:1px solid var(--line); }
+
+    main{ max-width:var(--maxw); margin:0 auto; padding:18px 18px 26px; }
+    .layout{ display:grid; grid-template-columns: minmax(0, 1.6fr) minmax(340px, 0.9fr); gap:18px; align-items:start; }
+
+    .hero{
+      position:relative; border:1px solid var(--line);
+      border-radius:var(--radius); overflow:hidden; background:#0b0d10;
+      box-shadow: var(--shadow); aspect-ratio: 16 / 9;
+    }
+    .hero img{ width:100%; height:100%; object-fit:cover; display:block; opacity:.92; }
+    .hero-overlay{ position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(900px 360px at 65% 40%, rgba(255,255,255,.08), transparent 60%),
+                  linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.18));
+    }
+    .hero-corner{ position:absolute; right:12px; top:12px; display:flex; gap:8px; pointer-events:auto; }
+    .hero-btn{
+      width:40px;height:40px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(0,0,0,.35); color:#fff;
+      display:grid; place-items:center; cursor:pointer;
+    }
+    .thumbbar{ margin-top:12px; display:flex; gap:10px; align-items:center; }
+    .thumbs{ flex:1; display:flex; gap:10px; overflow:auto; padding-bottom:6px; scrollbar-width: thin; }
+    .thumb{
+      width:var(--thumb); height:var(--thumb); border-radius:12px;
+      border:1px solid var(--line); background:#fff;
+      overflow:hidden; flex:0 0 auto; cursor:pointer; position:relative;
+    }
+    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .thumb.active{ outline:2px solid #111827; outline-offset:2px; }
+    .label{ position:absolute; left:6px; bottom:6px; font-size:11px; color:#fff;
+      background:rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.18);
+      padding:2px 6px; border-radius:999px;
+    }
+
+    .panel{ border-left:1px solid var(--line); padding-left:18px; }
+    .panel-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .model h1{ margin:0; font-size:34px; letter-spacing:-.02em; }
+    .badge{ display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:5px 8px; border:1px solid var(--line); border-radius:999px; margin-left:10px; background:#fff; }
+    .sub{ margin-top:8px; color:var(--muted); font-size:13px; }
+
+    .toggle-row{
+      margin-top:14px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border:1px solid var(--line); border-radius:12px; padding:12px; background:#fff;
+    }
+    .switch{ position:relative; width:44px;height:26px; background:#111827; border-radius:999px; cursor:pointer; }
+    .switch.off{ background:#d1d5db; }
+    .knob{ position:absolute; top:3px; left:3px; width:20px;height:20px; border-radius:999px; background:#fff; transition: transform .18s ease; }
+    .switch.on .knob{ transform: translateX(18px); }
+    .toggle-text{ font-size:14px; color:#111827; flex:1; min-width:0; }
+
+    .search{
+      margin-top:12px; display:flex; align-items:center; gap:10px;
+      border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff;
+    }
+    .search input{ border:none; outline:none; width:100%; font-size:14px; }
+
+    .card{ margin-top:14px; border:1px solid var(--line); border-radius:14px; background:#fff; overflow:hidden; }
+    .card-header{ display:flex; align-items:center; justify-content:space-between; padding:14px; border-bottom:1px solid var(--line); cursor:pointer; user-select:none; }
+    .card-header h2{ margin:0; font-size:16px; letter-spacing:-.01em; }
+    .card-body{ padding:14px; display:none; }
+    .card.open .card-body{ display:block; }
+    .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-top:1px dashed #eef0f3; }
+    .row:first-of-type{ border-top:none; padding-top:0; }
+    .section-title{ font-size:13px; font-weight:700; margin:0 0 8px 0; }
+    .price{ font-weight:600; font-size:13px; white-space:nowrap; }
+    .muted{ color:var(--muted); font-size:13px; }
+
+    .swatches{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+    .swatch{
+      width:56px;height:40px;border-radius:10px;border:1px solid var(--line);
+      cursor:pointer; position:relative; overflow:hidden; background:#f3f4f6;
+    }
+    .swatch.active{ outline:2px solid #111827; outline-offset:2px; }
+    .swatch::after{ content:""; position:absolute; inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.40), rgba(0,0,0,.18)); mix-blend-mode: overlay;
+    }
+
+    .summary{
+      margin-top:14px; border:1px solid var(--line); border-radius:14px; background:#fff; padding:14px; display:grid; gap:10px;
+    }
+    .summary-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .big{ font-size:22px; font-weight:800; margin:0; }
+    .small{ font-size:12px; color:var(--muted); margin-top:4px; }
+
+    .icon{ width:18px;height:18px;display:inline-block; }
+    .chev{ width:18px;height:18px; transition: transform .18s ease; }
+    .card.open .chev{ transform: rotate(180deg); }
+
+    @media (max-width: 1024px){
+      .layout{ grid-template-columns: 1fr; }
+      .panel{ border-left:none; padding-left:0; }
+      .model h1{ font-size:30px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="left-actions">
+        <div class="menu">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <span>Menu</span>
+        </div>
+      </div>
+      <div class="logo">FABBRICA</div>
+      <div class="right-actions">
+        <button class="ghost" type="button" onclick="location.href='index.html'">Home</button>
+        <button class="ghost" type="button" id="saveBtn">Salva</button>
+        <button class="ghost" type="button" id="shareBtn">Crea codice</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="subnav">
+    <div class="subnav-inner">
+      <div class="subnav-left">
+        <a href="index.html">← Torna alla vetrina</a>
+        <a href="#" id="save2">Salva</a>
+        <a href="#" id="createCode">Crea il codice Fabbrica</a>
+      </div>
+      <div class="subnav-right">
+        <div class="pill"><span style="font-weight:700">€</span><span id="monthly">2.318,15</span><span class="muted">/ mese</span></div>
+        <div class="pill"><span id="total" style="font-weight:800">258.263,00</span><span class="muted">€</span></div>
+        <button class="cta secondary" type="button" id="summaryBtn">Riepilogo</button>
+        <button class="cta" type="button" id="contactBtn">Contatta la Fabbrica</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="layout">
+      <section class="visual">
+        <div class="hero" id="hero">
+          <img id="heroImg" alt="Anteprima fidanzato"
+               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cdefs%3E%3CradialGradient id='g' cx='65%25' cy='35%25' r='75%25'%3E%3Cstop offset='0%25' stop-color='%234b5563'/%3E%3Cstop offset='45%25' stop-color='%23111827'/%3E%3Cstop offset='100%25' stop-color='%230b0d10'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='42' fill='white' opacity='0.92'%3EIMMAGINE PLACEHOLDER%3C/text%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-family='Arial' font-size='18' fill='white' opacity='0.7'%3ESostituisci con la tua foto%3C/text%3E%3C/svg%3E" />
+          <div class="hero-overlay"></div>
+          <div class="hero-corner">
+            <button class="hero-btn" type="button" title="Schermo intero" id="fullscreenBtn" aria-label="Schermo intero">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="thumbbar">
+          <div class="thumbs" id="thumbs">
+            <div class="thumb active" data-hero="0"><img alt="Thumb 1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='t' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23111827'/%3E%3Cstop offset='1' stop-color='%23374151'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23t)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='26' fill='white' opacity='0.9'%3E1%3C/text%3E%3C/svg%3E"><div class="label">1</div></div>
+            <div class="thumb" data-hero="1"><img alt="Thumb 2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='t2' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%230b0d10'/%3E%3Cstop offset='1' stop-color='%234b5563'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23t2)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='26' fill='white' opacity='0.9'%3E2%3C/text%3E%3C/svg%3E"><div class="label">2</div></div>
+            <div class="thumb" data-hero="2"><img alt="Thumb 3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='t3' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231f2937'/%3E%3Cstop offset='1' stop-color='%230b0d10'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23t3)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='26' fill='white' opacity='0.9'%3E3%3C/text%3E%3C/svg%3E"><div class="label">3</div></div>
+            <div class="thumb" data-hero="3"><img alt="Thumb 4" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='t4' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%230b0d10'/%3E%3Cstop offset='1' stop-color='%23111827'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23t4)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='26' fill='white' opacity='0.9'%3E4%3C/text%3E%3C/svg%3E"><div class="label">4</div></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-top">
+          <div class="model">
+            <h1>Fidanzato RS <span class="badge">2026</span></h1>
+            <div class="sub">Dati tecnici ed equipaggiamento di serie</div>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-text">Mostra la rata mensile degli accessori</div>
+          <div class="switch on" id="monthlyToggle" role="switch" aria-checked="true" tabindex="0"><div class="knob"></div></div>
+        </div>
+
+        <div class="search" role="search">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.3-4.3"></path>
+          </svg>
+          <input id="searchInput" type="text" placeholder="Cerca le opzioni di equipaggiamento" />
+        </div>
+
+        <div class="card open" data-filter="colori esterno colore esterno vernice">
+          <div class="card-header"><h2>Colori dell'esterno</h2>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div><div class="section-title">Colore di serie</div><div class="muted">Bianco</div></div>
+              <div class="price">0,00 €</div>
+            </div>
+            <div class="swatches" id="baseColors">
+              <div class="swatch active" style="background:#e5e7eb" data-name="Bianco" data-price="0" data-monthly="0" title="Bianco" tabindex="0"></div>
+              <div class="swatch" style="background:#0b0d10" data-name="Nero" data-price="0" data-monthly="0" title="Nero" tabindex="0"></div>
+              <div class="swatch" style="background:#b91c1c" data-name="Rosso" data-price="0" data-monthly="0" title="Rosso" tabindex="0"></div>
+            </div>
+
+            <div class="row" style="margin-top:10px;">
+              <div><div class="section-title">Colore speciale</div><div class="muted">Opzioni premium</div></div>
+              <div class="price">3.660,00 €</div>
+            </div>
+            <div class="swatches" id="specialColors">
+              <div class="swatch" style="background:#c7c9cc" data-name="Argento" data-price="3660" data-monthly="42.50" title="Argento" tabindex="0"></div>
+              <div class="swatch" style="background:#9ca3af" data-name="Grigio" data-price="3660" data-monthly="42.50" title="Grigio" tabindex="0"></div>
+              <div class="swatch" style="background:#4b5563" data-name="Antracite" data-price="3660" data-monthly="42.50" title="Antracite" tabindex="0"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card open" data-filter="stile personalità dettagli finiture accessori">
+          <div class="card-header"><h2>Stile e dettagli</h2>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div><div class="section-title">Barba</div><div class="muted" id="beardLabel">Rasato</div></div>
+              <div class="price" id="beardPrice">0,00 €</div>
+            </div>
+            <div class="swatches" id="beardOptions">
+              <div class="swatch active" style="background:linear-gradient(135deg,#f3f4f6,#e5e7eb)" data-name="Rasato" data-price="0" data-monthly="0" title="Rasato" tabindex="0"></div>
+              <div class="swatch" style="background:linear-gradient(135deg,#d1d5db,#9ca3af)" data-name="Pizzetto" data-price="180" data-monthly="2.10" title="Pizzetto" tabindex="0"></div>
+              <div class="swatch" style="background:linear-gradient(135deg,#9ca3af,#4b5563)" data-name="Barba corta" data-price="320" data-monthly="3.75" title="Barba corta" tabindex="0"></div>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <div><div class="section-title">Stile</div><div class="muted" id="styleLabel">Elegante</div></div>
+              <div class="price" id="stylePrice">0,00 €</div>
+            </div>
+            <div class="swatches" id="styleOptions">
+              <div class="swatch active" style="background:linear-gradient(135deg,#111827,#374151)" data-name="Elegante" data-price="0" data-monthly="0" title="Elegante" tabindex="0"></div>
+              <div class="swatch" style="background:linear-gradient(135deg,#0b0d10,#111827)" data-name="Sportivo" data-price="250" data-monthly="2.95" title="Sportivo" tabindex="0"></div>
+              <div class="swatch" style="background:linear-gradient(135deg,#374151,#6b7280)" data-name="Romantico" data-price="290" data-monthly="3.40" title="Romantico" tabindex="0"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="summary-top">
+            <div>
+              <p class="big" id="summaryTotal">258.263,00 €</p>
+              <div class="small" id="summaryMonthly">2.318,15 € / mese</div>
+            </div>
+            <button class="cta secondary" type="button" id="resetBtn">Reset</button>
+          </div>
+          <div class="muted">
+            Colore: <span id="pickedColor">Bianco</span> · Barba: <span id="pickedBeard">Rasato</span> · Stile: <span id="pickedStyle">Elegante</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const BASE_TOTAL = 258263.00;
+    const BASE_MONTHLY = 2318.15;
+    const state = {
+      monthlyEnabled: true,
+      picked: {
+        color: { name: "Bianco", price: 0, monthly: 0 },
+        beard: { name: "Rasato", price: 0, monthly: 0 },
+        style: { name: "Elegante", price: 0, monthly: 0 },
+      }
+    };
+
+    function euro(n){
+      const s = n.toFixed(2);
+      const [i,d]=s.split(".");
+      return i.replace(/\B(?=(\d{3})+(?!\d))/g,".") + "," + d;
+    }
+
+    function recalc(){
+      const addTotal = state.picked.color.price + state.picked.beard.price + state.picked.style.price;
+      const addMonthly = state.picked.color.monthly + state.picked.beard.monthly + state.picked.style.monthly;
+      const total = BASE_TOTAL + addTotal;
+      const monthly = BASE_MONTHLY + addMonthly;
+
+      document.getElementById("total").textContent = euro(total);
+      document.getElementById("monthly").textContent = euro(monthly);
+
+      document.getElementById("summaryTotal").textContent = `${euro(total)} €`;
+      document.getElementById("summaryMonthly").textContent = state.monthlyEnabled ? `${euro(monthly)} € / mese` : "Rata mensile nascosta";
+
+      document.getElementById("pickedColor").textContent = state.picked.color.name;
+      document.getElementById("pickedBeard").textContent = state.picked.beard.name;
+      document.getElementById("pickedStyle").textContent = state.picked.style.name;
+
+      document.getElementById("beardLabel").textContent = state.picked.beard.name;
+      document.getElementById("beardPrice").textContent = `${euro(state.picked.beard.price)} €`;
+      document.getElementById("styleLabel").textContent = state.picked.style.name;
+      document.getElementById("stylePrice").textContent = `${euro(state.picked.style.price)} €`;
+    }
+
+    // accordion
+    document.querySelectorAll(".card-header").forEach(h=>{
+      h.addEventListener("click", ()=> h.closest(".card").classList.toggle("open"));
+    });
+
+    // toggle
+    const toggle = document.getElementById("monthlyToggle");
+    function applyToggle(){
+      toggle.classList.toggle("on", state.monthlyEnabled);
+      toggle.classList.toggle("off", !state.monthlyEnabled);
+      toggle.setAttribute("aria-checked", String(state.monthlyEnabled));
+      recalc();
+    }
+    toggle.addEventListener("click", ()=>{ state.monthlyEnabled=!state.monthlyEnabled; applyToggle(); });
+
+    // search filter (cards)
+    document.getElementById("searchInput").addEventListener("input", (e)=>{
+      const q = e.target.value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach(card=>{
+        const hay=(card.getAttribute("data-filter")||"").toLowerCase();
+        const title=(card.querySelector("h2")?.textContent||"").toLowerCase();
+        card.style.display = (!q || hay.includes(q) || title.includes(q)) ? "" : "none";
+      });
+    });
+
+    function setActive(container, el){
+      container.querySelectorAll(".swatch").forEach(s=>s.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function bindSwatches(containerId, onPick){
+      const c = document.getElementById(containerId);
+      c.querySelectorAll(".swatch").forEach(s=>{
+        const pick=()=>onPick(s);
+        s.addEventListener("click", pick);
+        s.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();pick();} });
+      });
+    }
+
+    // colors: make selection exclusive between base and special like the real UI feel
+    function pickColor(swatch){
+      document.querySelectorAll("#baseColors .swatch, #specialColors .swatch").forEach(s=>s.classList.remove("active"));
+      swatch.classList.add("active");
+      state.picked.color = { name: swatch.dataset.name, price: Number(swatch.dataset.price||0), monthly: Number(swatch.dataset.monthly||0) };
+      recalc();
+    }
+    bindSwatches("baseColors", pickColor);
+    bindSwatches("specialColors", pickColor);
+
+    bindSwatches("beardOptions", (sw)=>{ setActive(document.getElementById("beardOptions"), sw);
+      state.picked.beard = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) }; recalc();
+    });
+    bindSwatches("styleOptions", (sw)=>{ setActive(document.getElementById("styleOptions"), sw);
+      state.picked.style = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) }; recalc();
+    });
+
+    // thumbs => hero swap (placeholders)
+    const heroImg = document.getElementById("heroImg");
+    const heroSources = [
+      heroImg.src,
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cdefs%3E%3CradialGradient id='g' cx='35%25' cy='40%25' r='80%25'%3E%3Cstop offset='0%25' stop-color='%234b5563'/%3E%3Cstop offset='55%25' stop-color='%230b0d10'/%3E%3Cstop offset='100%25' stop-color='%23111827'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='42' fill='white' opacity='0.92'%3EPLACEHOLDER 2%3C/text%3E%3C/svg%3E",
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23111827'/%3E%3Cstop offset='55%25' stop-color='%23374151'/%3E%3Cstop offset='100%25' stop-color='%230b0d10'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='42' fill='white' opacity='0.92'%3EPLACEHOLDER 3%3C/text%3E%3C/svg%3E",
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%230b0d10'/%3E%3Cstop offset='50%25' stop-color='%231f2937'/%3E%3Cstop offset='100%25' stop-color='%234b5563'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='42' fill='white' opacity='0.92'%3EPLACEHOLDER 4%3C/text%3E%3C/svg%3E"
+    ];
+
+    function setHero(idx){
+      heroImg.src = heroSources[idx] || heroSources[0];
+      document.querySelectorAll(".thumb").forEach(t=>t.classList.remove("active"));
+      const a = document.querySelector(`.thumb[data-hero="${idx}"]`);
+      if(a) a.classList.add("active");
+    }
+    document.querySelectorAll(".thumb").forEach(t=>{
+      t.addEventListener("click", ()=> setHero(Number(t.dataset.hero)));
+    });
+
+    // reset
+    document.getElementById("resetBtn").addEventListener("click", ()=>{
+      state.picked.color = { name:"Bianco", price:0, monthly:0 };
+      state.picked.beard = { name:"Rasato", price:0, monthly:0 };
+      state.picked.style = { name:"Elegante", price:0, monthly:0 };
+
+      document.querySelectorAll("#baseColors .swatch, #specialColors .swatch, #beardOptions .swatch, #styleOptions .swatch")
+        .forEach(s=>s.classList.remove("active"));
+      document.querySelector("#baseColors .swatch")?.classList.add("active");
+      document.querySelector("#beardOptions .swatch")?.classList.add("active");
+      document.querySelector("#styleOptions .swatch")?.classList.add("active");
+
+      setHero(0);
+      recalc();
+    });
+
+    // fullscreen
+    document.getElementById("fullscreenBtn").addEventListener("click", async ()=>{
+      const el=document.getElementById("hero");
+      if(!document.fullscreenElement){ try{ await el.requestFullscreen(); }catch{} }
+      else{ try{ await document.exitFullscreen(); }catch{} }
+    });
+
+    applyToggle();
+    recalc();
+  </script>
+</body>
+</html>
