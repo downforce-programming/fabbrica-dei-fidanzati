@@ -1,4 +1,13 @@
-<!-- ========================= configuratore.html ========================= -->
+<!-- configuratore.html (updated)
+  - Uses your PNG images:
+      Nero  -> img/hero-1.png
+      Blu   -> img/hero-2.png
+      Bianco-> img/hero-3.png
+  - Clicking the color swatches on the right updates the big preview.
+  - Fixes the missing #specialColors binding so the script won’t break.
+  - Keeps the rest of your page/logic intact.
+-->
+
 <!doctype html>
 <html lang="it">
 <head>
@@ -185,8 +194,8 @@
     <div class="layout">
       <section class="visual">
         <div class="hero" id="hero">
-          <img id="heroImg" alt="Anteprima fidanzato"
-               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cdefs%3E%3CradialGradient id='g' cx='65%25' cy='35%25' r='75%25'%3E%3Cstop offset='0%25' stop-color='%234b5563'/%3E%3Cstop offset='45%25' stop-color='%23111827'/%3E%3Cstop offset='100%25' stop-color='%230b0d10'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='42' fill='white' opacity='0.92'%3EIMMAGINE PLACEHOLDER%3C/text%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-family='Arial' font-size='18' fill='white' opacity='0.7'%3ESostituisci con la tua foto%3C/text%3E%3C/svg%3E" />
+          <!-- Default image: Bianco => hero-3.png -->
+          <img id="heroImg" alt="Anteprima fidanzato" src="img/hero-3.png" />
           <div class="hero-overlay"></div>
           <div class="hero-corner">
             <button class="hero-btn" type="button" title="Schermo intero" id="fullscreenBtn" aria-label="Schermo intero">
@@ -197,12 +206,21 @@
           </div>
         </div>
 
+        <!-- Thumbs left as placeholders (optional). They still work to switch images, but not required for your color feature. -->
         <div class="thumbbar">
           <div class="thumbs" id="thumbs">
-            <div class="thumb active" data-hero="0"><img alt="Thumb 1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='t' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23111827'/%3E%3Cstop offset='1' stop-color='%23374151'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23t)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='26' fill='white' opacity='0.9'%3E1%3C/text%3E%3C/svg%3E"><div class="label">1</div></div>
-            <div class="thumb" data-hero="1"><img alt="Thumb 2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='t2' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%230b0d10'/%3E%3Cstop offset='1' stop-color='%234b5563'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23t2)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='26' fill='white' opacity='0.9'%3E2%3C/text%3E%3C/svg%3E"><div class="label">2</div></div>
-            <div class="thumb" data-hero="2"><img alt="Thumb 3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='t3' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231f2937'/%3E%3Cstop offset='1' stop-color='%230b0d10'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23t3)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='26' fill='white' opacity='0.9'%3E3%3C/text%3E%3C/svg%3E"><div class="label">3</div></div>
-            <div class="thumb" data-hero="3"><img alt="Thumb 4" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='t4' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%230b0d10'/%3E%3Cstop offset='1' stop-color='%23111827'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23t4)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='26' fill='white' opacity='0.9'%3E4%3C/text%3E%3C/svg%3E"><div class="label">4</div></div>
+            <div class="thumb active" data-hero="0">
+              <img alt="Thumb 1" src="img/hero-3.png">
+              <div class="label">1</div>
+            </div>
+            <div class="thumb" data-hero="1">
+              <img alt="Thumb 2" src="img/hero-1.png">
+              <div class="label">2</div>
+            </div>
+            <div class="thumb" data-hero="2">
+              <img alt="Thumb 3" src="img/hero-2.png">
+              <div class="label">3</div>
+            </div>
           </div>
         </div>
       </section>
@@ -228,7 +246,7 @@
         </div>
 
         <div class="card open" data-filter="colori esterno colore esterno vernice">
-          <div class="card-header"><h2>Colore Vestiti </h2>
+          <div class="card-header"><h2>Colore Vestiti</h2>
             <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
           </div>
           <div class="card-body">
@@ -237,10 +255,11 @@
               <div class="price">0,00 €</div>
             </div>
             <div class="swatches" id="baseColors">
-              <div class="swatch" style="background:#e5e7eb" data-name="Bianco" data-price="0" data-monthly="0" title="Bianco" tabindex="0"></div>
+              <!-- Make Bianco selected by default -->
+              <div class="swatch active" style="background:#e5e7eb" data-name="Bianco" data-price="0" data-monthly="0" title="Bianco" tabindex="0"></div>
               <div class="swatch" style="background:#0b0d10" data-name="Nero" data-price="0" data-monthly="0" title="Nero" tabindex="0"></div>
-              <div class="swatch" style="background:#0f174a" data-name="Blu" data-price="0" data-monthly="0" title="Rosso" tabindex="0"></div>
-            </div>            
+              <div class="swatch" style="background:#0f174a" data-name="Blu" data-price="0" data-monthly="0" title="Blu" tabindex="0"></div>
+            </div>
           </div>
         </div>
 
@@ -288,8 +307,17 @@
   </main>
 
   <script>
+    // === YOUR IMAGE MAP (PNG) ===
+    // Put these files in: ./img/
+    const COLOR_TO_HERO = {
+      "nero": "img/hero-1.png",
+      "blu": "img/hero-2.png",
+      "bianco": "img/hero-3.png",
+    };
+
     const BASE_TOTAL = 258263.00;
     const BASE_MONTHLY = 2318.15;
+
     const state = {
       monthlyEnabled: true,
       picked: {
@@ -359,6 +387,7 @@
 
     function bindSwatches(containerId, onPick){
       const c = document.getElementById(containerId);
+      if (!c) return; // IMPORTANT: don't crash if element is missing
       c.querySelectorAll(".swatch").forEach(s=>{
         const pick=()=>onPick(s);
         s.addEventListener("click", pick);
@@ -366,30 +395,54 @@
       });
     }
 
-    // colors: make selection exclusive between base and special like the real UI feel
+    // === HERO IMAGE CONTROL ===
+    const heroImg = document.getElementById("heroImg");
+
+    function setHeroByColorName(colorName){
+      const key = (colorName || "").trim().toLowerCase();
+      const img = COLOR_TO_HERO[key];
+      if (img) heroImg.src = img;
+    }
+
+    // colors: clicking swatches updates state + updates hero preview
     function pickColor(swatch){
       document.querySelectorAll("#baseColors .swatch, #specialColors .swatch").forEach(s=>s.classList.remove("active"));
       swatch.classList.add("active");
-      state.picked.color = { name: swatch.dataset.name, price: Number(swatch.dataset.price||0), monthly: Number(swatch.dataset.monthly||0) };
+
+      state.picked.color = {
+        name: swatch.dataset.name,
+        price: Number(swatch.dataset.price||0),
+        monthly: Number(swatch.dataset.monthly||0)
+      };
+
+      // update preview image
+      setHeroByColorName(state.picked.color.name);
+
+      // optional: keep thumbs coherent (not required)
+      // (no-op)
+
       recalc();
     }
     bindSwatches("baseColors", pickColor);
-    bindSwatches("specialColors", pickColor);
+    bindSwatches("specialColors", pickColor); // safe: bindSwatches checks missing element
 
-    bindSwatches("beardOptions", (sw)=>{ setActive(document.getElementById("beardOptions"), sw);
-      state.picked.beard = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) }; recalc();
-    });
-    bindSwatches("styleOptions", (sw)=>{ setActive(document.getElementById("styleOptions"), sw);
-      state.picked.style = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) }; recalc();
+    bindSwatches("beardOptions", (sw)=>{
+      setActive(document.getElementById("beardOptions"), sw);
+      state.picked.beard = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) };
+      recalc();
     });
 
-    // thumbs => hero swap (placeholders)
-    const heroImg = document.getElementById("heroImg");
+    bindSwatches("styleOptions", (sw)=>{
+      setActive(document.getElementById("styleOptions"), sw);
+      state.picked.style = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) };
+      recalc();
+    });
+
+    // thumbs => hero swap (kept, but now uses your 3 PNGs)
     const heroSources = [
-      heroImg.src,
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cdefs%3E%3CradialGradient id='g' cx='35%25' cy='40%25' r='80%25'%3E%3Cstop offset='0%25' stop-color='%234b5563'/%3E%3Cstop offset='55%25' stop-color='%230b0d10'/%3E%3Cstop offset='100%25' stop-color='%23111827'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='42' fill='white' opacity='0.92'%3EPLACEHOLDER 2%3C/text%3E%3C/svg%3E",
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23111827'/%3E%3Cstop offset='55%25' stop-color='%23374151'/%3E%3Cstop offset='100%25' stop-color='%230b0d10'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='42' fill='white' opacity='0.92'%3EPLACEHOLDER 3%3C/text%3E%3C/svg%3E",
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%230b0d10'/%3E%3Cstop offset='50%25' stop-color='%231f2937'/%3E%3Cstop offset='100%25' stop-color='%234b5563'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3Ctext x='50%25' y='52%25' text-anchor='middle' font-family='Arial' font-size='42' fill='white' opacity='0.92'%3EPLACEHOLDER 4%3C/text%3E%3C/svg%3E"
+      "img/hero-3.png", // 0 (white)
+      "img/hero-1.png", // 1 (black)
+      "img/hero-2.png", // 2 (blue)
     ];
 
     function setHero(idx){
@@ -398,6 +451,7 @@
       const a = document.querySelector(`.thumb[data-hero="${idx}"]`);
       if(a) a.classList.add("active");
     }
+
     document.querySelectorAll(".thumb").forEach(t=>{
       t.addEventListener("click", ()=> setHero(Number(t.dataset.hero)));
     });
@@ -414,7 +468,7 @@
       document.querySelector("#beardOptions .swatch")?.classList.add("active");
       document.querySelector("#styleOptions .swatch")?.classList.add("active");
 
-      setHero(0);
+      setHeroByColorName("Bianco");
       recalc();
     });
 
@@ -425,7 +479,9 @@
       else{ try{ await document.exitFullscreen(); }catch{} }
     });
 
+    // init
     applyToggle();
+    setHeroByColorName(state.picked.color.name);
     recalc();
   </script>
 </body>
