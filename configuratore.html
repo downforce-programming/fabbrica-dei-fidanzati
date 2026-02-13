@@ -1,11 +1,11 @@
 <!-- configuratore.html (updated)
-  - Uses your PNG images:
+  Changes:
+  - Removed the thumbs under the anteprima.
+  - Anteprima now keeps EACH image’s natural aspect ratio (no forced 16:9).
+  - Color swatches update the anteprima using your PNGs:
       Nero  -> img/hero-1.png
       Blu   -> img/hero-2.png
       Bianco-> img/hero-3.png
-  - Clicking the color swatches on the right updates the big preview.
-  - Fixes the missing #specialColors binding so the script won’t break.
-  - Keeps the rest of your page/logic intact.
 -->
 
 <!doctype html>
@@ -25,7 +25,6 @@
       --radius: 14px;
       --maxw: 1320px;
       --headerh: 72px;
-      --thumb: 82px;
     }
     *{ box-sizing:border-box; }
     body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:var(--ink); background:var(--bg); }
@@ -62,13 +61,36 @@
     main{ max-width:var(--maxw); margin:0 auto; padding:18px 18px 26px; }
     .layout{ display:grid; grid-template-columns: minmax(0, 1.6fr) minmax(340px, 0.9fr); gap:18px; align-items:start; }
 
+    /* HERO: no fixed aspect-ratio anymore. It adapts to the image */
     .hero{
-      position:relative; border:1px solid var(--line);
-      border-radius:var(--radius); overflow:hidden; background:#0b0d10;
-      box-shadow: var(--shadow); aspect-ratio: 16 / 9;
+      position:relative;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:#0b0d10;
+      box-shadow: var(--shadow);
+
+      /* center image and allow variable ratios */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      /* prevent huge tall images from taking over the page */
+      max-height: 76vh;
     }
-    .hero img{ width:100%; height:100%; object-fit:cover; display:block; opacity:.92; }
-    .hero-overlay{ position:absolute; inset:0; pointer-events:none;
+
+    /* Keep natural ratio and fit within viewport */
+    .hero img{
+      display:block;
+      width:auto;
+      height:auto;
+      max-width:100%;
+      max-height:76vh;
+      opacity:.92;
+    }
+
+    .hero-overlay{
+      position:absolute; inset:0; pointer-events:none;
       background: radial-gradient(900px 360px at 65% 40%, rgba(255,255,255,.08), transparent 60%),
                   linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.18));
     }
@@ -78,19 +100,6 @@
       border:1px solid rgba(255,255,255,.22);
       background:rgba(0,0,0,.35); color:#fff;
       display:grid; place-items:center; cursor:pointer;
-    }
-    .thumbbar{ margin-top:12px; display:flex; gap:10px; align-items:center; }
-    .thumbs{ flex:1; display:flex; gap:10px; overflow:auto; padding-bottom:6px; scrollbar-width: thin; }
-    .thumb{
-      width:var(--thumb); height:var(--thumb); border-radius:12px;
-      border:1px solid var(--line); background:#fff;
-      overflow:hidden; flex:0 0 auto; cursor:pointer; position:relative;
-    }
-    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .thumb.active{ outline:2px solid #111827; outline-offset:2px; }
-    .label{ position:absolute; left:6px; bottom:6px; font-size:11px; color:#fff;
-      background:rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.18);
-      padding:2px 6px; border-radius:999px;
     }
 
     .panel{ border-left:1px solid var(--line); padding-left:18px; }
@@ -151,9 +160,12 @@
       .layout{ grid-template-columns: 1fr; }
       .panel{ border-left:none; padding-left:0; }
       .model h1{ font-size:30px; }
+      .hero{ max-height: 70vh; }
+      .hero img{ max-height: 70vh; }
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="header-inner">
@@ -194,7 +206,7 @@
     <div class="layout">
       <section class="visual">
         <div class="hero" id="hero">
-          <!-- Default image: Bianco => hero-3.png -->
+          <!-- Default = Bianco -->
           <img id="heroImg" alt="Anteprima fidanzato" src="img/hero-3.png" />
           <div class="hero-overlay"></div>
           <div class="hero-corner">
@@ -203,24 +215,6 @@
                 <path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"></path>
               </svg>
             </button>
-          </div>
-        </div>
-
-        <!-- Thumbs left as placeholders (optional). They still work to switch images, but not required for your color feature. -->
-        <div class="thumbbar">
-          <div class="thumbs" id="thumbs">
-            <div class="thumb active" data-hero="0">
-              <img alt="Thumb 1" src="img/hero-3.png">
-              <div class="label">1</div>
-            </div>
-            <div class="thumb" data-hero="1">
-              <img alt="Thumb 2" src="img/hero-1.png">
-              <div class="label">2</div>
-            </div>
-            <div class="thumb" data-hero="2">
-              <img alt="Thumb 3" src="img/hero-2.png">
-              <div class="label">3</div>
-            </div>
           </div>
         </div>
       </section>
@@ -246,7 +240,8 @@
         </div>
 
         <div class="card open" data-filter="colori esterno colore esterno vernice">
-          <div class="card-header"><h2>Colore Vestiti</h2>
+          <div class="card-header">
+            <h2>Colore Vestiti</h2>
             <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
           </div>
           <div class="card-body">
@@ -255,7 +250,6 @@
               <div class="price">0,00 €</div>
             </div>
             <div class="swatches" id="baseColors">
-              <!-- Make Bianco selected by default -->
               <div class="swatch active" style="background:#e5e7eb" data-name="Bianco" data-price="0" data-monthly="0" title="Bianco" tabindex="0"></div>
               <div class="swatch" style="background:#0b0d10" data-name="Nero" data-price="0" data-monthly="0" title="Nero" tabindex="0"></div>
               <div class="swatch" style="background:#0f174a" data-name="Blu" data-price="0" data-monthly="0" title="Blu" tabindex="0"></div>
@@ -264,7 +258,8 @@
         </div>
 
         <div class="card open" data-filter="stile personalità dettagli finiture accessori">
-          <div class="card-header"><h2>Stile e dettagli</h2>
+          <div class="card-header">
+            <h2>Stile e dettagli</h2>
             <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
           </div>
           <div class="card-body">
@@ -307,8 +302,8 @@
   </main>
 
   <script>
-    // === YOUR IMAGE MAP (PNG) ===
-    // Put these files in: ./img/
+    // Put your files here (relative to configuratore.html):
+    // img/hero-1.png (Nero), img/hero-2.png (Blu), img/hero-3.png (Bianco)
     const COLOR_TO_HERO = {
       "nero": "img/hero-1.png",
       "blu": "img/hero-2.png",
@@ -327,10 +322,18 @@
       }
     };
 
+    const heroImg = document.getElementById("heroImg");
+
     function euro(n){
       const s = n.toFixed(2);
       const [i,d]=s.split(".");
       return i.replace(/\B(?=(\d{3})+(?!\d))/g,".") + "," + d;
+    }
+
+    function setHeroByColorName(colorName){
+      const key = (colorName || "").trim().toLowerCase();
+      const img = COLOR_TO_HERO[key];
+      if (img) heroImg.src = img;
     }
 
     function recalc(){
@@ -381,13 +384,14 @@
     });
 
     function setActive(container, el){
+      if (!container) return;
       container.querySelectorAll(".swatch").forEach(s=>s.classList.remove("active"));
       el.classList.add("active");
     }
 
     function bindSwatches(containerId, onPick){
       const c = document.getElementById(containerId);
-      if (!c) return; // IMPORTANT: don't crash if element is missing
+      if (!c) return;
       c.querySelectorAll(".swatch").forEach(s=>{
         const pick=()=>onPick(s);
         s.addEventListener("click", pick);
@@ -395,16 +399,7 @@
       });
     }
 
-    // === HERO IMAGE CONTROL ===
-    const heroImg = document.getElementById("heroImg");
-
-    function setHeroByColorName(colorName){
-      const key = (colorName || "").trim().toLowerCase();
-      const img = COLOR_TO_HERO[key];
-      if (img) heroImg.src = img;
-    }
-
-    // colors: clicking swatches updates state + updates hero preview
+    // colors: clicking swatches updates the big preview image
     function pickColor(swatch){
       document.querySelectorAll("#baseColors .swatch, #specialColors .swatch").forEach(s=>s.classList.remove("active"));
       swatch.classList.add("active");
@@ -415,16 +410,11 @@
         monthly: Number(swatch.dataset.monthly||0)
       };
 
-      // update preview image
       setHeroByColorName(state.picked.color.name);
-
-      // optional: keep thumbs coherent (not required)
-      // (no-op)
-
       recalc();
     }
     bindSwatches("baseColors", pickColor);
-    bindSwatches("specialColors", pickColor); // safe: bindSwatches checks missing element
+    bindSwatches("specialColors", pickColor); // safe if missing
 
     bindSwatches("beardOptions", (sw)=>{
       setActive(document.getElementById("beardOptions"), sw);
@@ -436,24 +426,6 @@
       setActive(document.getElementById("styleOptions"), sw);
       state.picked.style = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) };
       recalc();
-    });
-
-    // thumbs => hero swap (kept, but now uses your 3 PNGs)
-    const heroSources = [
-      "img/hero-3.png", // 0 (white)
-      "img/hero-1.png", // 1 (black)
-      "img/hero-2.png", // 2 (blue)
-    ];
-
-    function setHero(idx){
-      heroImg.src = heroSources[idx] || heroSources[0];
-      document.querySelectorAll(".thumb").forEach(t=>t.classList.remove("active"));
-      const a = document.querySelector(`.thumb[data-hero="${idx}"]`);
-      if(a) a.classList.add("active");
-    }
-
-    document.querySelectorAll(".thumb").forEach(t=>{
-      t.addEventListener("click", ()=> setHero(Number(t.dataset.hero)));
     });
 
     // reset
