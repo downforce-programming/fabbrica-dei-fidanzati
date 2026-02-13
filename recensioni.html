@@ -1,46 +1,156 @@
 <!-- ========================= recensioni.html ========================= -->
 <!doctype html>
 <html lang="it">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Fabbrica dei Fidanzati | Recensioni</title>
   <style>
-    :root{
-      --bg:#fff; --ink:#0b0d10; --muted:#6b7280; --line:#e5e7eb; --chip:#f3f4f6;
-      --maxw: 980px; --radius: 14px;
+    :root {
+      --bg: #fff;
+      --ink: #0b0d10;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --chip: #f3f4f6;
+      --maxw: 980px;
+      --radius: 14px;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink);background:var(--bg)}
-    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px}
-    .bar{height:72px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .logo{font-weight:800;letter-spacing:.18em}
-    .btn{border:1px solid var(--line);background:#fff;padding:10px 12px;border-radius:999px;cursor:pointer}
-    main{padding:18px 0 26px}
-    h1{margin:0;font-size:30px;letter-spacing:-.02em}
-    .muted{color:var(--muted)}
-    .grid{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px}
-    .review{border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:#fff}
-    .stars{letter-spacing:.12em;font-size:12px}
-    .review p{margin:10px 0 0;line-height:1.5}
-    .who{margin-top:10px;color:var(--muted);font-size:13px}
-    .form{
-      margin-top:14px;border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:#fff
+
+    * {
+      box-sizing: border-box
     }
-    input, textarea{
-      width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;outline:none;
-      margin-top:8px;
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--ink);
+      background: var(--bg)
     }
-    textarea{min-height:96px;resize:vertical}
-    .cta{margin-top:10px;width:100%;border-radius:999px;border:1px solid #111827;background:#111827;color:#fff;padding:12px 14px;font-weight:800;cursor:pointer}
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line)
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 18px
+    }
+
+    .bar {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px
+    }
+
+    .logo {
+      font-weight: 800;
+      letter-spacing: .18em
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer
+    }
+
+    main {
+      padding: 18px 0 26px
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -.02em
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    .grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px
+    }
+
+    .review {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff
+    }
+
+    .stars {
+      letter-spacing: .12em;
+      font-size: 12px
+    }
+
+    .review p {
+      margin: 10px 0 0;
+      line-height: 1.5
+    }
+
+    .who {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .form {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      margin-top: 8px;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical
+    }
+
+    .cta {
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid #111827;
+      background: #111827;
+      color: #fff;
+      padding: 12px 14px;
+      font-weight: 800;
+      cursor: pointer
+    }
   </style>
 </head>
+
 <body>
   <header>
     <div class="wrap">
       <div class="bar">
-        <div class="logo">FABBRICA</div>
+        <div class="logo">FABBRICA dei FIDANZATI</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
           <button class="btn" type="button" onclick="location.href='index.html'">Home</button>
           <button class="btn" type="button" onclick="location.href='configuratore.html'">Configuratore</button>
@@ -51,29 +161,34 @@
 
   <main class="wrap">
     <h1>Recensioni</h1>
-    <div class="muted" style="margin-top:6px;">Aggiungi anche le recensioni vere della tua ragazza o degli amici (se vuoi).</div>
+    <div class="muted" style="margin-top:6px;">Recensioni di utenti soddisfatti</div>
 
     <div class="grid" id="reviews">
       <div class="review">
         <div class="stars">★★★★★</div>
-        <p>“Interfaccia super elegante. Sembra davvero un configuratore di lusso.”</p>
-        <div class="who">— Cliente verificata</div>
+        <p>“WHAT’S IN A NAME? THAT WHICH WE CALL A ROSE, BY ANY OTHER NAME WOULD SMELL AS SWEET.
+          SO ROMEO WOULD, WERE HE NOT ROMEO CALLED, RETAIN THAT DEAR PERFECTION THAT OWES WITHOUT A TITLE.
+          ROMEO, DOCF THY NAME AND FOR THAT NAME WHICH IS NOT PART OF THEE TAKE ALL MYSELF”
+          “I’LL TAKE THEE AT THY WORD.
+          CALL ME BUT LOVE, AND I’LL BE NEW BAPTIZED.
+          HENCEFORTH I WILL NEVER BE ROMEO”</p>
+        <div class="who">— La mia stellina</div>
       </div>
       <div class="review">
         <div class="stars">★★★★★</div>
-        <p>“La personalizzazione è adorabile e curata nei dettagli. Idea perfetta.”</p>
-        <div class="who">— Recensione 2</div>
+        <p>“te extraño más de cualquier cosa al mundo, lo que quiero más es estar cerca de ti y poner mi cabeza sobre tu hombro. Te quiero muchísimo mi amor”</p>
+        <div class="who">— La mia principessa</div>
       </div>
       <div class="review">
         <div class="stars">★★★★☆</div>
-        <p>“Bellissimo. Personalizzerei ancora di più le immagini, ma è già top.”</p>
-        <div class="who">— Recensione 3</div>
+        <p>“sembra seriamente uscito da una commedia romantica.”</p>
+        <div class="who">— Il mio splendore</div>
       </div>
     </div>
 
     <div class="form">
       <div style="font-weight:900">Aggiungi recensione (locale)</div>
-      <div class="muted" style="margin-top:6px;">Salvata solo nel browser (localStorage). Perfetta per demo.</div>
+      <div class="muted" style="margin-top:6px;">Salvata solo nel browser.</div>
       <input id="name" placeholder="Nome (es. Marta)" />
       <input id="stars" placeholder="Stelle (1-5)" inputmode="numeric" />
       <textarea id="text" placeholder="Testo recensione"></textarea>
@@ -82,58 +197,59 @@
   </main>
 
   <script>
-    const key="fabbrica_reviews_v1";
-    const list=document.getElementById("reviews");
+    const key = "fabbrica_reviews_v1";
+    const list = document.getElementById("reviews");
 
-    function render(items){
+    function render(items) {
       // keep 1st 3 defaults already in DOM; append customs below them
-      list.querySelectorAll("[data-custom='1']").forEach(n=>n.remove());
-      items.forEach(r=>{
-        const d=document.createElement("div");
-        d.className="review";
-        d.dataset.custom="1";
-        const s=Math.max(1, Math.min(5, Number(r.stars)||5));
+      list.querySelectorAll("[data-custom='1']").forEach(n => n.remove());
+      items.forEach(r => {
+        const d = document.createElement("div");
+        d.className = "review";
+        d.dataset.custom = "1";
+        const s = Math.max(1, Math.min(5, Number(r.stars) || 5));
         d.innerHTML = `
-          <div class="stars">${"★".repeat(s)}${"☆".repeat(5-s)}</div>
+          <div class="stars">${"★".repeat(s)}${"☆".repeat(5 - s)}</div>
           <p>${escapeHtml(r.text)}</p>
-          <div class="who">— ${escapeHtml(r.name||"Anonimo")}</div>
+          <div class="who">— ${escapeHtml(r.name || "Anonimo")}</div>
         `;
         list.appendChild(d);
       });
     }
 
-    function escapeHtml(str){
-      return String(str||"")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    function escapeHtml(str) {
+      return String(str || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
-    function load(){
-      try{ return JSON.parse(localStorage.getItem(key)||"[]"); }catch{ return []; }
+    function load() {
+      try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; }
     }
-    function save(items){
+    function save(items) {
       localStorage.setItem(key, JSON.stringify(items));
     }
 
-    const items=load();
+    const items = load();
     render(items);
 
-    document.getElementById("addBtn").addEventListener("click", ()=>{
-      const name=document.getElementById("name").value.trim();
-      const stars=document.getElementById("stars").value.trim();
-      const text=document.getElementById("text").value.trim();
-      if(!text) return alert("Inserisci un testo recensione.");
-      const next=[...items, {name, stars, text}];
-      items.push({name, stars, text});
+    document.getElementById("addBtn").addEventListener("click", () => {
+      const name = document.getElementById("name").value.trim();
+      const stars = document.getElementById("stars").value.trim();
+      const text = document.getElementById("text").value.trim();
+      if (!text) return alert("Inserisci un testo recensione.");
+      const next = [...items, { name, stars, text }];
+      items.push({ name, stars, text });
       save(items);
       render(items);
-      document.getElementById("name").value="";
-      document.getElementById("stars").value="";
-      document.getElementById("text").value="";
+      document.getElementById("name").value = "";
+      document.getElementById("stars").value = "";
+      document.getElementById("text").value = "";
     });
   </script>
 </body>
+
 </html>
