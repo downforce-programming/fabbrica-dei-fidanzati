@@ -1,11 +1,27 @@
 <!-- configuratore.html (updated)
-  Changes:
-  - Removed the thumbs under the anteprima.
-  - Anteprima now keeps EACH image’s natural aspect ratio (no forced 16:9).
-  - Color swatches update the anteprima using your PNGs:
-      Nero  -> img/hero-1.png
-      Blu   -> img/hero-2.png
-      Bianco-> img/hero-3.png
+  Updates:
+  - No thumbs under anteprima (removed).
+  - Anteprima keeps each image’s natural aspect ratio (no forced 16:9).
+  - Clicking swatches updates the anteprima with your PNGs.
+
+  Image mapping used:
+  COLORS:
+    Bianco -> img/hero-3.png
+    Nero   -> img/hero-1.png
+    Blu    -> img/hero-2.png
+
+  BEARD (hero-4..6):
+    Rasato     -> img/hero-4.png
+    Pizzetto   -> img/hero-5.png
+    Barba corta-> img/hero-6.png
+
+  STYLE (hero-7..9):
+    Elegante   -> img/hero-7.png
+    Sportivo   -> img/hero-8.png
+    Romantico  -> img/hero-9.png
+
+  NOTE:
+  - hero-10.png is not used by default in this mapping. You can assign it later if you want a special “combo” look.
 -->
 
 <!doctype html>
@@ -61,7 +77,7 @@
     main{ max-width:var(--maxw); margin:0 auto; padding:18px 18px 26px; }
     .layout{ display:grid; grid-template-columns: minmax(0, 1.6fr) minmax(340px, 0.9fr); gap:18px; align-items:start; }
 
-    /* HERO: no fixed aspect-ratio anymore. It adapts to the image */
+    /* HERO: adapts to each image ratio */
     .hero{
       position:relative;
       border:1px solid var(--line);
@@ -70,16 +86,12 @@
       background:#0b0d10;
       box-shadow: var(--shadow);
 
-      /* center image and allow variable ratios */
       display:flex;
       align-items:center;
       justify-content:center;
 
-      /* prevent huge tall images from taking over the page */
       max-height: 76vh;
     }
-
-    /* Keep natural ratio and fit within viewport */
     .hero img{
       display:block;
       width:auto;
@@ -88,7 +100,6 @@
       max-height:76vh;
       opacity:.92;
     }
-
     .hero-overlay{
       position:absolute; inset:0; pointer-events:none;
       background: radial-gradient(900px 360px at 65% 40%, rgba(255,255,255,.08), transparent 60%),
@@ -302,12 +313,24 @@
   </main>
 
   <script>
-    // Put your files here (relative to configuratore.html):
-    // img/hero-1.png (Nero), img/hero-2.png (Blu), img/hero-3.png (Bianco)
-    const COLOR_TO_HERO = {
-      "nero": "img/hero-1.png",
-      "blu": "img/hero-2.png",
-      "bianco": "img/hero-3.png",
+    // Images (PNG). Put them in ./img/ next to configuratore.html
+    const IMG = {
+      color: {
+        "nero": "img/hero-1.png",
+        "blu": "img/hero-2.png",
+        "bianco": "img/hero-3.png",
+      },
+      beard: {
+        "rasato": "img/hero-4.png",
+        "pizzetto": "img/hero-5.png",
+        "barba corta": "img/hero-6.png",
+      },
+      style: {
+        "elegante": "img/hero-7.png",
+        "sportivo": "img/hero-8.png",
+        "romantico": "img/hero-9.png",
+      }
+      // hero-10.png intentionally unused for now
     };
 
     const BASE_TOTAL = 258263.00;
@@ -326,14 +349,22 @@
 
     function euro(n){
       const s = n.toFixed(2);
-      const [i,d]=s.split(".");
+      const parts = s.split(".");
+      const i = parts[0];
+      const d = parts[1];
       return i.replace(/\B(?=(\d{3})+(?!\d))/g,".") + "," + d;
     }
 
-    function setHeroByColorName(colorName){
-      const key = (colorName || "").trim().toLowerCase();
-      const img = COLOR_TO_HERO[key];
-      if (img) heroImg.src = img;
+    function keyify(name){
+      return (name || "").trim().toLowerCase();
+    }
+
+    // “Last change wins” behavior:
+    // clicking Color/Beard/Style updates the hero to the mapped image for that group.
+    function setHeroFor(group, pickedName){
+      const k = keyify(pickedName);
+      const src = IMG[group] && IMG[group][k];
+      if (src) heroImg.src = src;
     }
 
     function recalc(){
@@ -346,7 +377,8 @@
       document.getElementById("monthly").textContent = euro(monthly);
 
       document.getElementById("summaryTotal").textContent = `${euro(total)} €`;
-      document.getElementById("summaryMonthly").textContent = state.monthlyEnabled ? `${euro(monthly)} € / mese` : "Rata mensile nascosta";
+      document.getElementById("summaryMonthly").textContent =
+        state.monthlyEnabled ? `${euro(monthly)} € / mese` : "Rata mensile nascosta";
 
       document.getElementById("pickedColor").textContent = state.picked.color.name;
       document.getElementById("pickedBeard").textContent = state.picked.beard.name;
@@ -354,6 +386,7 @@
 
       document.getElementById("beardLabel").textContent = state.picked.beard.name;
       document.getElementById("beardPrice").textContent = `${euro(state.picked.beard.price)} €`;
+
       document.getElementById("styleLabel").textContent = state.picked.style.name;
       document.getElementById("stylePrice").textContent = `${euro(state.picked.style.price)} €`;
     }
@@ -371,7 +404,10 @@
       toggle.setAttribute("aria-checked", String(state.monthlyEnabled));
       recalc();
     }
-    toggle.addEventListener("click", ()=>{ state.monthlyEnabled=!state.monthlyEnabled; applyToggle(); });
+    toggle.addEventListener("click", ()=>{
+      state.monthlyEnabled = !state.monthlyEnabled;
+      applyToggle();
+    });
 
     // search filter (cards)
     document.getElementById("searchInput").addEventListener("input", (e)=>{
@@ -395,13 +431,19 @@
       c.querySelectorAll(".swatch").forEach(s=>{
         const pick=()=>onPick(s);
         s.addEventListener("click", pick);
-        s.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();pick();} });
+        s.addEventListener("keydown",(e)=>{
+          if(e.key==="Enter"||e.key===" "){
+            e.preventDefault();
+            pick();
+          }
+        });
       });
     }
 
-    // colors: clicking swatches updates the big preview image
+    // COLOR
     function pickColor(swatch){
-      document.querySelectorAll("#baseColors .swatch, #specialColors .swatch").forEach(s=>s.classList.remove("active"));
+      document.querySelectorAll("#baseColors .swatch, #specialColors .swatch")
+        .forEach(s=>s.classList.remove("active"));
       swatch.classList.add("active");
 
       state.picked.color = {
@@ -410,23 +452,43 @@
         monthly: Number(swatch.dataset.monthly||0)
       };
 
-      setHeroByColorName(state.picked.color.name);
+      setHeroFor("color", state.picked.color.name);
       recalc();
     }
     bindSwatches("baseColors", pickColor);
     bindSwatches("specialColors", pickColor); // safe if missing
 
-    bindSwatches("beardOptions", (sw)=>{
-      setActive(document.getElementById("beardOptions"), sw);
-      state.picked.beard = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) };
-      recalc();
-    });
+    // BEARD
+    function pickBeard(swatch){
+      const container = document.getElementById("beardOptions");
+      setActive(container, swatch);
 
-    bindSwatches("styleOptions", (sw)=>{
-      setActive(document.getElementById("styleOptions"), sw);
-      state.picked.style = { name: sw.dataset.name, price: Number(sw.dataset.price||0), monthly: Number(sw.dataset.monthly||0) };
+      state.picked.beard = {
+        name: swatch.dataset.name,
+        price: Number(swatch.dataset.price||0),
+        monthly: Number(swatch.dataset.monthly||0)
+      };
+
+      setHeroFor("beard", state.picked.beard.name);
       recalc();
-    });
+    }
+    bindSwatches("beardOptions", pickBeard);
+
+    // STYLE
+    function pickStyle(swatch){
+      const container = document.getElementById("styleOptions");
+      setActive(container, swatch);
+
+      state.picked.style = {
+        name: swatch.dataset.name,
+        price: Number(swatch.dataset.price||0),
+        monthly: Number(swatch.dataset.monthly||0)
+      };
+
+      setHeroFor("style", state.picked.style.name);
+      recalc();
+    }
+    bindSwatches("styleOptions", pickStyle);
 
     // reset
     document.getElementById("resetBtn").addEventListener("click", ()=>{
@@ -436,24 +498,29 @@
 
       document.querySelectorAll("#baseColors .swatch, #specialColors .swatch, #beardOptions .swatch, #styleOptions .swatch")
         .forEach(s=>s.classList.remove("active"));
+
       document.querySelector("#baseColors .swatch")?.classList.add("active");
       document.querySelector("#beardOptions .swatch")?.classList.add("active");
       document.querySelector("#styleOptions .swatch")?.classList.add("active");
 
-      setHeroByColorName("Bianco");
+      // Default hero on reset = white
+      setHeroFor("color", "Bianco");
       recalc();
     });
 
     // fullscreen
     document.getElementById("fullscreenBtn").addEventListener("click", async ()=>{
       const el=document.getElementById("hero");
-      if(!document.fullscreenElement){ try{ await el.requestFullscreen(); }catch{} }
-      else{ try{ await document.exitFullscreen(); }catch{} }
+      if(!document.fullscreenElement){
+        try{ await el.requestFullscreen(); }catch{}
+      }else{
+        try{ await document.exitFullscreen(); }catch{}
+      }
     });
 
     // init
     applyToggle();
-    setHeroByColorName(state.picked.color.name);
+    setHeroFor("color", state.picked.color.name);
     recalc();
   </script>
 </body>
